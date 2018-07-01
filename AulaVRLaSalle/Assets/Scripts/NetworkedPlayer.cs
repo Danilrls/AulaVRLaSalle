@@ -13,7 +13,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour
 
     void Start ()
     {
-        Debug.Log("i'm instantiated");
 
         if (photonView.isMine)
         {
