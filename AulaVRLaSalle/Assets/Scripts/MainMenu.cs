@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    public int nPlayers;
+    static public int nPlayers;
+    static public bool isPaused = false;
 
     private void Start()
     {
         nPlayers = 4;
+        Debug.Log(nPlayers);
     }
 
     //start whenever the program gets executed
@@ -22,11 +24,6 @@ public class MainMenu : MonoBehaviour {
         Debug.Log("QUIT2");
         Application.Quit();
     } 
-
-    //play or pause the game for students if teacher demands it
-    public void playPause(){
-        Debug.Log("PLAY or PAUSE");
-    }
 
    //get amount of players registered for game
    public void numPlayers(GameObject button){
@@ -50,4 +47,18 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
+    [PunRPC]
+    private void playPause(){
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            if (isPaused)
+            {
+                Time.timeScale = 1.0f;
+                isPaused = false;
+            }
+            else{
+                Time.timeScale = 0.0f;
+                isPaused = true;
+            }
+        }
+    }
 }

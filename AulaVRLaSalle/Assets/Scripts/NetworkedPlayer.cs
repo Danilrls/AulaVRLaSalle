@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class NetworkedPlayer : Photon.MonoBehaviour
 {
@@ -10,22 +11,24 @@ public class NetworkedPlayer : Photon.MonoBehaviour
 
 
     
-
     void Start ()
     {
+        if (PhotonNetwork.isMasterClient){
+            Debug.Log("I AM MASTER");
+        }
+        else{
+            if (photonView.isMine){
+                //playerGlobal es el transform del player
+                playerGlobal = GameObject.Find("OVRPlayerController").transform;
+                //playerLocal es la cabeza del player
+                playerLocal = playerGlobal.Find("OVRCameraRig/TrackingSpace/CenterEyeAnchor");
 
-        if (photonView.isMine)
-        {
-            //playerGlobal es el transform del player
-            playerGlobal = GameObject.Find("OVRPlayerController").transform;
-            //playerLocal es la cabeza del player
-            playerLocal = playerGlobal.Find("OVRCameraRig/TrackingSpace/CenterEyeAnchor");
 
+                this.transform.SetParent(playerLocal);
+                // this.transform.localPosition = Vector3.zero;
 
-            this.transform.SetParent(playerLocal);
-           // this.transform.localPosition = Vector3.zero;
-
-            // avatar.SetActive(false);
+                // avatar.SetActive(false);
+            }
         }
     }
 	
@@ -49,5 +52,14 @@ public class NetworkedPlayer : Photon.MonoBehaviour
             avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
             
         }
+    }
+
+    public void backToMenu() {
+
+        Debug.Log(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        Debug.Log(SceneManager.GetActiveScene().buildIndex - 1);
+        //kill game
+        PhotonNetwork.LeaveLobby();
     }
 }
