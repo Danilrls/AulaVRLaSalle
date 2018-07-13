@@ -23,7 +23,6 @@ public class ButtonsController : MonoBehaviour {
 			
 			clicked = OVRInput.Get(OVRInput.Button.One);
 			if(clicked &&  canClick){
-				//SceneManager.LoadScene("multiplayer");
 				GameObject.Find("FjalarPreview").transform.Rotate(rotation,0,0);
 				GameObject.Find("CauacPreview").transform.Rotate(rotation,0,0);
 				//canClick = false;

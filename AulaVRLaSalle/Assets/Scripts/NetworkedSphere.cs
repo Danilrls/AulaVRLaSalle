@@ -5,15 +5,14 @@ using UnityEngine;
 public class NetworkedSphere : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start () {	}
 	
 	// Update is called once per frame
 	[PunRPC]
 	private void onPickup(Vector3 position){
 		GameObject.Find("Sphere").transform.position = position;
 	}
+
 	void Update () {
 		//this.GetComponent<PhotonView>().RPC("onPickup",PhotonTargets.MasterClient, new object[]{this.transform.position});
 	}

@@ -7,8 +7,6 @@ public class NetworkedCube : Photon.MonoBehaviour
     public Transform cubeTransform;
     public GameObject cube;
 
-    
-
     void Start ()
     {
         

@@ -8,8 +8,6 @@ public class NetworkedPlayer : Photon.MonoBehaviour
 
     public Transform playerGlobal;
     public Transform playerLocal;
-
-
     
     void Start ()
     {
@@ -42,24 +40,28 @@ public class NetworkedPlayer : Photon.MonoBehaviour
             stream.SendNext(playerLocal.localPosition);
             stream.SendNext(playerLocal.localRotation);
       
-        }
-        else
-        {
+        }else{
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
 
             avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
-            
+            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext(); 
+        }
+
+        if (!PhotonNetwork.isMasterClient && MainMenu.start == true){
+            if (photonView.isMine){
+                MainMenu.start = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
     }
 
     public void backToMenu() {
-
         Debug.Log(SceneManager.GetActiveScene().buildIndex - 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         Debug.Log(SceneManager.GetActiveScene().buildIndex - 1);
         //kill game
         PhotonNetwork.LeaveLobby();
     }
+
 }

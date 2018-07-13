@@ -7,26 +7,40 @@ public class MainMenu : MonoBehaviour {
 
     static public int nPlayers;
     static public bool isPaused = false;
+    static public bool start = false;
 
-    private void Start()
-    {
+    //start whenever the program gets executed
+    private void Start(){
         nPlayers = 4;
         Debug.Log(nPlayers);
     }
 
-    //start whenever the program gets executed
-    public void playGame () {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //sets users to game scene
+    public void playGame (GameObject button) {
+        switch (button.name){
+            case "StudentButton":
+                SceneManager.LoadScene("loading");
+                break;
+            case "Start":
+                SceneManager.LoadScene("multiplayer");
+                start = true;
+                break;
+            default:
+                break;
+       }
     }
 
-    //Exit platform service
-    public void exitPlatform () {
-        Debug.Log("QUIT2");
-        Application.Quit();
-    } 
+    //check if a student tries to access the platform as a professor
+    public bool isProfessor() {
+        if (PhotonNetwork.isMasterClient){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-   //get amount of players registered for game
-   public void numPlayers(GameObject button){
+    //get amount of players registered for game
+    public void numPlayers(GameObject button){
 
         switch (button.name){
             case "2Button":
@@ -47,18 +61,23 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
+    //pauses games for students
     [PunRPC]
-    private void playPause(){
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            if (isPaused)
-            {
-                Time.timeScale = 1.0f;
-                isPaused = false;
-            }
-            else{
-                Time.timeScale = 0.0f;
-                isPaused = true;
-            }
+    public void playPause(){
+        if (isPaused){
+            Debug.Log("paused");
+            Time.timeScale = 1.0f;
+            isPaused = false;
+        }else{
+            Debug.Log("play");
+            Time.timeScale = 0.0f;
+            isPaused = true;
         }
     }
+
+    //Exit platform service
+    public void exitPlatform () {
+        Debug.Log("QUIT2");
+        Application.Quit();
+    } 
 }
